@@ -1,0 +1,764 @@
+API's
+
+    r = requests.get('http://127.0.0.1:5000/hello_world', auth =('admin', 'atch_5K}?g'))
+    data = r.json()
+
+    - Authentication 
+
+        - So far our API has been public but what if we want to secure it in some way?  
+        - Basic Authentication 
+
+            - a server asking for a username and a password to allow access to private data
+            - Basic Auth is performed over HTTP and is encrypted using SSL to protect the username and password being transmitted
+        
+        - API Key Auth 
+
+            - Requires the API to be accessed with a unique key
+            - key is usually a long series of letters and numbers that is completely separate from the user's login details
+            - can be intentionally limited so that they provide access only to the bits of data and services users we need, rather than granting access to everything
+        
+        - Oauth Tokens 
+
+            - a prevailing standard that applications can use to provide client applications with secure access
+            - operates using the principles of API key authentication
+            - Authorizes with access tokens rather than credentials
+            -  authentication request is sent from the client application to a server 
+            - token is returned to the client application over HTTPS, which then passes it to the API server
+                - apps that ask you to login with your Google, Facebook, or Twitter account
+                - acting as an authentication server
+
+    - Requests Package
+
+        - requests.get(), requests.post(), requests.put(), or requests.delete()
+        - Handle the response
+            - access the response data, status code, headers, and other information
+            - request.status_code()
+                - 200s = success
+                - 400s or 500s = Errors
+            - request.json()
+
+Classes 
+
+    - Instantiation
+    calls the class 
+    my_variable = class()
+
+    Methods 
+        - functions defined within a class 
+        - __init__ is a constructor 
+        - creates attributes like self.hours and self.minutes see below 
+            - assigns 0 as a default 
+
+
+    Operator Overloading
+
+        - Class customization can redefine the functionality of built-in operators like <, >=, +, -, and * when used with class instances
+        # lt = less than 
+            def __lt__(self, other):
+                if self.hours < other.hours:
+                    return True
+                elif self.hours == other.hours:
+                    if self.minutes < other.minutes:
+                        return True
+                return False
+            - the Time class contains a definition for the __lt__ method, which overloads the < operator
+
+        - lt = <
+        - le = <=
+        - gt, ge 
+        - eq is == 
+        - ne is !=
+
+        - Compare if something is >, <, =, or != to another 
+
+    - isinstance()
+        returns a True or False Boolean depending on whether a given variable matches a given type
+        - stops the operator action
+
+    Derived Classes / Inheritance
+
+        - class will commonly share attributes with another class, but with some additions or variations
+            For example, a store inventory system might use a class called Item, having name and quantity attributes. 
+            But for fruits and vegetables, a class Produce might have name, quantity, and expiration date attributes. 
+            Note that Produce is really an Item with an additional feature, so ideally a program could define the Produce class as being the same as the Item class
+                but with the addition of an expiration date attribute.
+
+            - class Item:
+                self.name
+                self.quantity 
+            - class Produce(Item):
+                self.quantity
+                self.expiration
+
+
+Exceptions
+
+        - EOFError
+            input() hits end of file without reading any input
+        - KeyError
+            Dictionary key not found 
+        - ZeroDivisionError
+            Divide by 0
+        - ValueError
+            Invalid value 
+        - IndexError
+        - AttributeError
+            occurs if a function does not exist in an imported module
+        - IOError
+            If a file cannot be opened
+
+        - Except block continues on to code after the block, unless if part of a loop then goes to next iteration
+
+    Raising Exceptions 
+
+    - Code that detects an error can execute a raise statement, which causes immediate exit from the try block and the execution of an exception handler
+        try:
+            weight = int(input('Enter weight (in pounds): '))
+            if weight < 0:
+                raise ValueError('Invalid weight.')
+
+        raises a ValueError and outputs to console 
+
+    - Dont need a try block within a function
+        def get_weight():
+        weight = int(input('Enter weight (in pounds): '))
+        if weight < 0:
+            raise ValueError('Invalid weight.')
+        return weight
+
+
+Files 
+
+    - Open()
+        myvar = open('file.csv') 
+        - Another open mode is 'a' for appending 
+        - Can add a '+' character to the end of a mode, like 'r+' and 'w+' to specify an update mode. 
+    - close()
+        closes a file 
+    - file .read()
+        reads a file content as a string 
+    - file.readlines()
+        returns a list of strings
+        - 1st element = first line
+        - so on so forth 
+    -  file.write()
+    - file = open('file.txt', 'w')     w = write, default is read only (r)  
+    - file.write('string of words')
+        strings only 
+    - file.close()
+
+OS Path Methods 
+
+    checking if a given path is a directory or a file, getting the size of a file, obtaining a file's extension (e.g., .txt, .doc, .pdf), creating and deleting directories, etc
+
+    - os.path.split(path)
+        Splits a path into a 2-tuple (head, tail), where tail is the last token in the path string and head is everything else
+    - os.path.exists(path)
+        - Returns True if path exists, else returns False
+    - os.path.isfile(path)
+        - Returns True if path is an existing file, and false otherwise (e.g., path is a directory)
+    - os.path.getsize(path)
+        Returns the size in bytes of path
+    - os.walk()
+        -  'walks' a directory tree  visiting each subdirectory in the specified path
+        - used as the iterable object in a for loop that yields a 3-tuple for each iteration
+    - os.getcwd()
+        - gets and returns the current working directory 
+    - os.path.dirname(fileName)
+        - returns directory name from file path 
+    - os.path.basename(fileName)
+        returns file name from path 
+
+
+Functions 
+
+    def calories(num_steps):
+        pass 
+        - nothing is performed until function is defined
+
+    def steps_to_cals(steps):
+        print(f'FIXME: NEEDS DEFINED')
+            - adds a note that it needs defined when used
+    
+    when a variable is created inside a function, it is only visibile in the function 
+        def add(x,y):
+            sum = x + y 
+            return sum 
+
+    globals()
+        can print to view global variables 
+        functions are global unless built in 
+    locals()
+        local variables
+
+    
+
+JSON 
+
+    - JSON.parse() method
+            - creates a JavaScript object from a string containing JSON
+            - JSON.parse('[1,"two",null]') converts the string '[1,"two",null]'into the JavaScript array [1,"two",null]
+            - optional parameter for a reviver function
+                - reviver function is used to modify parsed values before being returned, and is helpful when a JSON string represents a data type not available in JSON
+
+
+        - JSON.stringify() method
+            - creates a string from a JavaScript object
+            - creates a string representation of any passed object by either calling the object's toJSON() method
+            -  has two optional parameters: a replacer and a spacer
+
+    - Creating a JSON file with dump() (see dump.py)
+
+            - As with other file types, we can open a JSON file in write mode using the option "w"
+            - can serialize Python objects into JSON‐encoded data using the dump()
+        
+        - Convert file to JSON with dumps() (see dumps.py)
+
+            - convert a Python dictionary into a JSON‐encoded string object
+            - Pass a dictionary object to json.dumps(), which then returns a string
+
+            - use custom indenting with dumps to make the output of JSON data easier to read 
+        
+        - Use the json.loads() function to convert a JSON‐encoded object or file into a Python dictionary
+            - see loads.py 
+
+Dictionaries
+
+    - Accessed by using keys rather than indices
+    - my_dcitionary['Messi']
+        - Returns a value associated with Messi
+    - Adding new key value pairs
+        - dict[k] = 7
+    - Can be modified in place
+        - students['John'] = 'A+'
+    Deleting Values
+        - del dict[k]
+        - removes k 
+    - Indexing operation - returns value from a key 
+        dict[key]
+    - Adding a key value pair 
+        dict[key] = value 
+    - Deletion 
+        del dict[key]
+    - Iteration 
+        key in dict 
+
+    Remove all items from dictionary 
+    dict.clear()
+
+    Reads the value of the key from the dictionary. If the key does not exist in the dictionary, then returns default value specified.
+        dict.get(key,default)
+
+    Merges dictionary my_dict1 with another dictionary my_dict2.
+        dict1.update(dict2)
+
+    Removes and returns the key value from the dictionary. If key does not exist, then default is returned.
+        dict.pop(key,default)
+
+    dict.items() 
+        returns a view object that yields a tuple of key value pairs
+        num_calories = dict(Coke=90, Coke_zero=0, Pepsi=94)
+        for soda, calories in num_calories.items():
+            print(f'{soda}: {calories}')
+        Coke: 90
+        Coke_zero: 0
+        Pepsi: 94
+
+    dict.keys()
+        returns the keys
+    dict.values()
+        returns values 
+
+
+Lists 
+
+    - List Functions
+        - len(list)
+        - list1 + list2 
+            - concat list 2 to end of list 1
+        - min(list)
+        - max(list)
+        - sum(list)
+        - list.index(val)
+            - finds the index of first matching value
+            - or returns val of index
+        - list.count(val)
+            - counts instances of a value in the list 
+        - list.pop()
+            - removes a list value, takes an index as an argument
+            - mylist.pop(0) removes first element
+        - list.remove()
+            - removes a mathcing value
+            - mylist.remove('apple')
+    
+
+    - list.append(value)
+    adds element to end of list 
+
+    - list.extend([x])
+        adds all items in [x] to end of list 
+        - my_list.extend([4, 12]) adds 4 and 12 to list 
+
+    - list.insert(i, x)
+        inserts x into lsit before position i 
+
+    - list.remove(x)
+        removes first matching value x from list 
+
+    - list.pop() 
+        removes and returns last element from list 
+
+    - list.pop(i)
+        removes and returns item at position i from list 
+
+    - list.sort()
+        sorts the list 
+
+    - list.reverse()
+        reverses order of list
+
+    - list.index(x)
+        returns index of matching value x 
+
+    - list.count(x)
+        coutns number of times x in list
+
+    - Enumerate 
+        iterates over a list and provides an iteration counter 
+        - returns variables 
+        - for pos, token in enumerate(tokens):
+
+    Built in Functions 
+
+    - all(list)
+        True if every element in list it True (does not = 0)
+
+    - any(list)
+        True if any element in lsit is true (any vlaue != 0)
+
+    - max(list)
+        get max element 
+    - min(list) = get min 
+    - sum(list)
+
+    List Slicing 
+
+        my_list[0:3] = accesses elements 0 thru 2 
+
+        Can also use a stride length to specify increments 
+        my_list[0:10:2] = accesses elements 0 thru 9 going up by 2's 
+
+        Common list slicing methods:
+
+            my_list[start:end]
+
+            my_list[start:end:stride]
+
+            my_list[start:]
+
+            my_list[:end]
+
+            my_list[:]
+                - gets a copy of the list 
+
+    Loops to modify lists 
+
+        my_list = [3.2, 5.0, 16.5, 12.25]
+
+        for i in range(len(my_list)):
+            my_list[ i ] += 5
+
+    List comprehension
+
+        iterates over a list, modifies each element, and returns a new list consisting of modified elements 
+
+        A list comprehension has three components:
+
+            An expression component to evaluate for each element in the iterable object.
+            A loop variable component to bind to the current iteration element.
+            An iterable object component to iterate over (list, string, tuple, enumerate, etc).
+
+        Add 5 to every element:
+        my_list = [10, 20, 30]
+        list_plus_5 = [(i + 5) for i in my_list]
+
+    Sorting Lists 
+
+        my_list.sort()
+
+        sorted_numbers = sorted(numbers)
+
+        also supports the reverse parameter (true or false)
+            - sorted([15,20,25], reverse=True)
+            - reverse sorts the list 
+
+        Other Arguments:
+            - key 
+                - specifies a function to be applied to each element before comparing for sorts 
+                - str.lower, str.upper, str.capitalize 
+            - key_sort = sorted(names, key=str.lower)
+
+Standard Libary Inclusions
+
+    Standard Library
+
+        - datetime
+            today 
+            date 
+            timedelta 
+        - random 
+            random numbers 
+            .shuffle 
+            .choice 
+            .remove 
+            random.seed(seed_value) seeds the random number generator using the given seed_value.
+            random.randint(a, b) returns a random number between a and b (inclusive).
+        - copy 
+            copies objects
+        - time 
+        - math 
+        - os 
+            Operating system informational and management helpers
+        - sys 
+            System specific environment or configuration helpers
+        -pdb 
+            The Python interactive debugger
+        - urlib
+            URL handling functions, such as requesting web pages
+
+
+Regex 
+
+    Concepts and Functions 
+
+        - Pattern creation
+
+            - uses a combination of ordinary and special characters known as metacharacters
+            - abc" matches the string "abc" exactly
+            - "a.c" matches any string that has an "a," followed by any character, and then a "c."
+
+        - Matching 
+
+            - most common function is re.match()
+                - checks if the pattern matches at the beginning of the string
+            - re.search()
+                - searches the entire string for a match
+        
+        - Modifiers
+
+            - the "i" modifier performs a case-insensitive match, ignoring the distinction between uppercase and lowercase
+            - add modifiers to the pattern by including them as an argument to the matching functions
+
+        - Character Classes 
+
+            - allow you to match a set of characters at a specific position in the string
+            - "[aeiou]" matches any vowel
+            - can also define ranges of characters, such as "[a-z]" for any lowercase letter
+            - Predefined character classes, like "\d" for digits or "\s" for whitespace, are also available.
+
+        - Quantifiers 
+
+            - specify the number of occurrences of a pattern that should be matched
+            -  "*" quantifier means "zero or more occurrences
+            - "+" quantifier means "one or more occurrences.
+            - "?" (zero or one occurrence) and "{n}" (exactly n occurrences)
+
+        - Grouping 
+
+            - Parentheses can group parts of a pattern
+
+        - Replacement 
+
+            - string substitution
+            - re.sub() function allows you to replace occurrences of a pattern in a string with a specified replacement
+
+    -  we want to find one or another value we can do so by using the | symbol between the two strings that we are interested in searching for
+        - case sensitive 
+        - see ipynb file
+
+    - Special Sequences with findall 
+
+        \A: This matches if the characters defined are at the beginning of the string "\AIt"
+        \b: This matches if the characters defined are at the beginning or at the end of a word "\bain" r"ain\b"
+        \B Returns a match where the specified characters are present, but NOT at the beginning (or at the end) of a word (the "r" in the beginning is making sure that the string is being treated as a "raw string") r"\Bain" r"ain\B"
+        \d Returns a match where the string contains digits (numbers from 0‐9) "\d"
+        \D Returns a match where the string DOES NOT contain digits "\D"
+        \s Returns a match where the string contains a white space character "\s"
+        \S Returns a match where the string DOES NOT contain a white space character "\S"
+        \w Returns a match where the string contains any word characters (characters from a to Z, digits from 0‐9, and the underscore _ character) "\w"
+        \W Returns a match where the string DOES NOT contain any word characters "\W"
+        \Z Returns a match if the specified characters are at the end of the string
+
+    - Split Method 
+
+        Same as string splitting 
+        re.split("\s", txt)
+            splits tokens on whitespace 
+
+        - split takes other parameters too 
+            - maxsplit
+                - splits according to the value
+
+
+Strings 
+
+    Common Formatting presentation types
+        - s = string 
+            - print(f'{name:s})
+        - d = decimal for integers only
+            - print(f'{number:d})
+            - prints as decimal number
+        - b = binary
+        - x lower case
+        - X upper case
+        - e prints in exponent notation
+        - f fixed point notation
+            print(f'{number:.2f})
+            two decimals
+
+    String Spacing / Field Widths
+        print(my_str:10)
+            gives the field 10 total spaces for alignment 
+        strings are left aligned, but numbers are right aligned
+
+        name = 'Joe'
+        matches = 20
+        points = 8
+        print(f'{name:6}{points:4}{matches:5}'
+
+        'Joe' has 3 characters, and the field width is 6, so 3 extra spaces are added after 'Joe'.
+        8 has 1 character, and the field width is 4, so 3 extra spaces are added before 8.
+        20 has 2 characters, and the field width is 5, so 3 extra spaces are added before 20.
+
+
+    Text Alignment 
+    Alignment characters determine how a val should be aligned within its field width 
+    < = left 
+    > = right 
+    ^ = centered 
+    used before the field width 
+
+    print(f'{"Player Name":<16})
+    prints player name aligned to left 
+
+        Fill Characters 
+            used to pad a replacement field when the string being inserted is samller than field width 
+            default is a space and not passed as a parameter 
+            score = 5
+            print(f'{score:*>4})
+            yields ***5
+
+        String Methods 
+            Replace(old, new)
+            repalce(old, new, count)
+
+            phrase = 'Someday I will have three goats, six horses, and nine llamas.'
+            phrase = phrase.replace('one', 'uno')
+
+
+            Find(x)
+                finds the first occurence of item x in a string or else returns -1 
+                can be a variable or string literal 
+
+                my_str = Hooray, you's a winna! 
+                my_str.find(!) returns index 21
+                my_Str.find(Hoo) returns 0 
+                my_str.find(oo) returns 1 (first index of first occurring match)
+            Find(x, start)
+                same but start = index to start at 
+            Find(x, start, end)
+
+            rfind(x)
+                searches stirng in reverse order 
+            count(x)
+                counts occurrences of string in string 
+
+        True or False Returning 
+
+            my_string.isalnum()
+                true if all upper or all lower or all nums are 0-9 
+            string.isdigit()
+                0-9
+            string.islower
+            string.isupper()
+            string.isspace()
+                true if all whitespace
+            string.startswith(x)
+            string.endswith(x)
+
+
+        Creating new strings from a string 
+
+        .capitalize()
+        newstr = string.capitalize()
+            cap on first letter
+
+        .lower()
+        .upper()
+        .strip() 
+            removes leading and trailing whitespace 
+        .title()
+
+
+        Splitting and Joining Strings 
+
+        .split()
+            space is default separator 
+            can pass a separator such as a comma 
+            split breaks the string into a list 
+            my_str = "My name is slim shady" becomes [my, name, is, slim, shady] after using my_str = my_str.split()
+
+            string = a$B$c 
+            string.split('$') = [a,B,c]
+
+            If a string starts or end with the separator, then an empty string is created in the token list 
+
+        .join()
+
+            inverse of split 
+            my_str = '@'.join([John,Seidl]) = John@Seidl 
+
+            separator can be anything
+
+        a lot of times split and join are used together to replace a separator
+            title = 'Python-Lab-Warmup'
+            tokens = title.split('-')
+            title = ':'.join(tokens)
+            = Python:Lab:Warmup
+
+        format() method
+
+            number = 6
+            amount = 32
+
+            print(f'{} burritos cost ${}'.format(number,amount))
+
+            - basically another way of using f strings 
+        - Positional replacement: 
+            'The {1} in the {0} is {2}.'.format('hat', 'cat', 'fat') returns The cat in the hat is fat by indexing 
+
+        - Inferred replacement 
+            'The {} in the {} is {}.'.format('cat', 'hat', 'fat')
+            date = 'April {}, {}'
+            print(date.format(22, 2020)) = April 22, 2020
+
+        - Named replacement 
+            'The {animal} in the {headwear} is {shape}.'.format(animal='cat', headwear='hat', shape='fat')
+            - Allows a programmer to create a keyword argument that defines a name and value in the format() parentheses
+            - Good practice is to use named replacement when formatting strings with many replacement fields to make the code more readable.
+
+        - Double braces {{ }} can be used to place an actual curly brace into a string
+
+    - Slice notation 
+        my_str[start:end]
+        my_str = 'Mississippi'
+        my_str[3:8] = sissi
+        Can use negatives to specify values relative to the end of the string
+        my_str[7:-2] = ip 
+
+        my_str[8:]
+            Goes from position to end 
+        my_str[:23] 
+            goes from beginning to index 22 
+        my_str[:-1]
+            all but the last character 
+
+        my_str = 'http://reddit.com/r/python'
+        protocol = 'http://'
+        print(my_str[len(protocol):])
+
+        outputs reddit.com/r/python 
+
+    - Slice Stride 
+        determines the incrementation of slice notation 
+        my_str[:17:2]
+            increments by 2 every time starting with 0 index 
+
+Virtual Environments 
+
+     - allow developers to manage dependencies and packages specific to each project 
+        without interference or conflicts with other projects or the system's global Python installation
+    - provide developers with flexibility and convenience when working on Python projects
+
+    
+    - VirtualEnv
+        -  Python's most widely used tools for creating virtual environments
+        - creates isolated environments by creating a copy of the system's Python interpreter and associated libraries
+        - easily create, activate, and deactivate virtual environments using command-line tools
+    
+    - venv 
+        - (Built-in): Starting from Python 3.3
+        - Python standard library includes the venv module
+        - creates an isolated environment with its own Python interpreter and libraries
+        - Best for Python 3 and above 
+    
+    - Conda 
+        - (Anaconda/Miniconda)
+        - provides a virtual environment manager called conda env
+        - create virtual environments with different Python versions and manage packages using the conda package manager
+
+    - Pipenv
+        -  higher-level tool built on top of pip and virtualenv
+        - combines package management and virtual environment creation into a single workflow. 
+    
+    - Poetry 
+        - modern Python dependency management and packaging tool
+
+    - Dependency Management 
+        - manage dependencies for different projects
+        - Each project can have its own virtual environmen
+        - specific versions of packages, ensuring that project dependencies do not conflict
+    
+    - Isolation 
+        - provide isolation between projects
+        - Do not overlap with other projects 
+    
+    - Reproducibility
+        - recreate the exact project development environment
+        - By specifying the versions of packages installed within the virtual environment, you can ensure consistent behavior
+
+    - Easy Deployment
+        - simplify the deployment process
+        - executing a command like python -m venv myenv
+        -  provides its own isolated Python interpreter, and you can install packages using pip
+
+    Example 
+
+        import sys
+        import venv 
+        # Specify the path where you want to create the virtual environment
+        venv_path = '/path/to/myenv'
+        # Create the virtual environment
+        venv.create(venv_path, clear=True, with_pip=True)
+        # Activate the virtual environment
+        activate_script = venv_path + '/Scripts/activate.bat' if sys.platform == 'win32' else venv_path + '/bin/activate'
+        exec(open(activate_script).read())
+
+        ** replace /path/to/myenv with the path that leads to where you want to create your virtual environment
+
+        venv.create() function creates the virtual environment
+        clear=True argument clears any existing files in the target directory before creating the environment
+        with_pip=True argument includes pip in the virtual environment, allowing you to install packages later
+
+    Steps for New Projects 
+
+        # 1. Create project folder
+        mkdir my_project
+        cd my_project
+
+        # 2. Create a virtual environment
+        python -m venv venv
+
+        # 3. Activate the environment
+        # Windows (PowerShell)
+        venv\Scripts\Activate.ps1
+        .\.venv\Scripts\Activate
+
+        # Mac/Linux
+        source venv/bin/activate
+
+        # 4. Install project dependencies
+        pip install flask flask-restful pandas etc 
+
+        # 5. Save dependencies for reproducibility
+        pip freeze > requirements.txt
