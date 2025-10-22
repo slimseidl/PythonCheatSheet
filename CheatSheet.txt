@@ -676,6 +676,7 @@ Strings
 
 Virtual Environments 
 
+
      - allow developers to manage dependencies and packages specific to each project 
         without interference or conflicts with other projects or the system's global Python installation
     - provide developers with flexibility and convenience when working on Python projects
@@ -762,3 +763,807 @@ Virtual Environments
 
         # 5. Save dependencies for reproducibility
         pip freeze > requirements.txt
+
+Jupyter Notebooks 
+
+    Keyboard Shortcuts for Jupyter 
+
+        - Edit / Command Mode - Enter / Esc
+        - New cell - A for above, b for below 
+        - Markdown to code - Y 
+        - code to markdown - m
+        - Turn on / off line numbers in cells - L 
+        - Delete cel - dd
+        - Save - S 
+        - Commands - CTRL SHIFT P 
+        - See shortcuts - H 
+
+    Magic Keywords 
+
+        - % for line magics 
+        - %% for cell magics 
+        - %timeit
+        - Used to time how long it takes for a single line to run 
+        - %%timeit  
+        - Used for whole cell timing
+        - must go at very top, before comments
+        - $pdb
+        - Python debugger
+        - Run at very top of notebook 
+        - can inspect variables with errors 
+
+    - More Magic Keywords 
+        - Terminal Commands in jupyter 
+            - !mkdir 
+            - %ls 
+                - show file in active directory
+            - %timeit 
+    -Convert notebooks 
+        - jupyter nbconvert --to FORMAT mynotebook.ipynb 
+        - Formats:
+            - HTML
+            - Latex
+            - PDF
+            - Markdown
+            - slideshow
+            - ascii
+            - notebooks
+            - executable script
+        - pip install nbconvert 
+
+pandas library 
+
+    - df.head() 
+    - df.columns
+    - .shape 
+        - returns the shape of the DataFrame
+    - .dtypes
+        - returns each datatype of the columns
+    - .info()
+        - returns info about the DataFrame including the number of non-null values
+    - .nunique()
+        - returns number of unique values for each column
+    - .describe()
+        - returns summary statistics, e.g. count, mean
+    - .tail()
+    - .loc
+        - uses labels of rows or columns to select data,
+        - df_means = df.loc[:,'id':'fractal_dimension_mean']
+        - location 
+        - first : is rows, second is columns 
+            [:,:] = all rows / columns 
+    - .iloc 
+        - uses the index numbers
+        - df_means = df.iloc[:,:12]
+        - index location
+
+    - numpy.r_ 
+        - concatenates slices of a df 
+        - use with iloc to select separated ranges of columns
+        - df_se = df.iloc[:, np.r_[0:2,12:22]]
+            - selects all rows, first two columns, then cols 12 - 21 
+
+    - .mean()
+        - compute mean of a column / feature 
+        - mean = df["column"].mean()
+    -.fillna()
+        - fill in missing values of a col with a value 
+        - fill in with mean
+            - df["column"] = df["column"].fillna(mean)
+        - inplace parameter - make changes in place rather than new col 
+            - df["column"].fillna(mean, inplace=True)
+    - .duplicated()
+        - view duplicated values 
+        - sum(df.duplicated()) returns a count of duplicates 
+    - .drop_duplicates(inplace=True)
+        - drops duplicates 
+    - df['col'] = pd.todatetime(df['col'])
+        - converts to datetime format 
+    - .drop()
+        - drop features / cols that arent relevant to dataset 
+        - df.drop(columns=["col1", "col2"], inplace=True)
+        - df.drop(["col1", "col2"], axis=1, inplace=True)
+            - axis is row / col 
+            - 0 = row 
+            - 1 = col 
+    - .rename()
+        - rename the columns and make them uniform
+        - can work with either a dictionary or a function that maps the old names to the new ones
+            - df.rename({"sales team": "group"}, axis=1, inplace=True)
+                - renames sales team to group 
+        - rename with a function 
+            - columns = lambda x: x.strip().lower().replace(" ","_"), inplace=True
+            - this method is easy to work with 
+    - df.query()
+        - to query a dataframe without repeating df name 
+        - df_2wd = df[df["drive"] == "2WD"] versus df_2wd = df.query('drive == "2WD"')
+        - Numeric Data:
+            - df_low_displ = df[df.displ < 3] versus df_low_displ = df.query('displ < 3')
+    - .isnull()
+        - view nulls across dataset 
+        - use df.isnull().sum() to view a count of nulls from each column in the df 
+        - use df.isnull().any() to view columns with missing values
+            - returns col name with boolean 
+    - .dropna(inplace=True)
+        - Drop rows with missing values 
+    - .astype()
+        - Uses dictionary mappings to cast values to different data types
+            - df['column_A'] = df.astype({'column_A': 'int32'})
+            - better for multiple vals 
+        - Casting using series rather than dict 
+            - df['column_A'] = df['column_A'].astype('int32')
+    - .dtypes 
+        - data types for cols 
+        - No parentheses
+    - .value_counts()
+        - count number of unique values in each col 
+    - .str.contains('value')
+        - search for a value in a string 
+    - .apply()
+        - Apply a function to a column 
+        - for c in split_columns:
+            df1[c] = df1[c].apply(lambda x: x.split("/")[0]) 
+    - pd.concat()
+        - concatenate dataframes 
+        - default is concat on rows (axis=0)
+            - stack dfs on top of each other by adding rows to the end 
+        - axis = 1
+            - combines horizontally, adding more columns to the end of df 
+    - np.iinfo() and np.finfo()
+        - see the minimum and maximum values that can be represented by each size
+        - np.iinfo("int16")
+            - columns can hold values between -32,768 and +32,767
+    - category
+        - If a string's column is repetitive or not very unique, it can be changed to category
+        - reduces space
+    - pd.merge()
+        - joins like sql tables 
+        - left, right, inner, outer 
+        - how param 
+            - how="inner" 
+        - on param 
+            - on = "key to join on" 
+            - left on
+                - left side key if column names are different 
+            - right on 
+                - right side key if col names are different 
+        - df_combined = pd.merge(df_08, df_18, how="inner", left_on="model_2008", right_on="model")
+    - pd.DataFrame.values.tolist()
+        - explodes a list value in a column to new columns 
+            - see last section of fueleconomy.ipynb 
+    - np.random.rand(25,5)
+        - creates a random array 
+        - .rand paramter indicates size of array 
+            - A list of 25 lists 
+            - 5 elements in every list 
+    - pd.DataFrame 
+        - Converts values to a pandas dataframe
+    .tolist()
+        - converts list items to cell values 
+        - each of the 25 lists becomes a separate cell value 
+    - .explode()
+        - explodes a list in a column to separate rows for each list
+            - see last section of fueleconomy.ipynb 
+        - df.explode(column="list_values")
+            - column param to specify column(s)
+    .groupby()
+        - group columns and compute statistics for them 
+        - df.groupby("workclass").mean(numeric_only=True)
+        - df.groupby(["col1","col2"]).mean(numeric_only=True)
+        - as_index parameter 
+            - False to keep "workclass" and "race" as non index values
+            - use number indices instead 
+    - .sum()
+        - axis parameter 
+        - 0 for sum on rows 
+        - 1 for sum columns 
+    - .sort_values()
+        - by = "column to sort by"
+        - ascending = t or f 
+
+    - .mean(), .median() .mode()
+
+    - Measures of Spread 
+        - quantile()
+            - values that split a group of data into equal parts, helping to show how the data is spread out
+            - [1, 2, 3, 4, 5]
+                - 25% quantile = 2
+                - 50% quantile = 3 (commonly referred to as the median)
+                - 75% quantile = 4
+        - .std()
+            - standard deviation 
+            - shows how much the individual numbers in a group differ from the average
+                - gives an idea of how spread out the data is
+            - stddev = sqrt of the sum of ((value - mean)squared) / number of values 
+                - 1, 2, 3, 4, 5
+                    - mean is 3
+                    - subtract mean from each 
+                    - -2, -1, 0, 1, 2
+                        - square each value 
+                        - 4, 1, 0, 1, 4
+                        - mean for values 
+                            - 10 / 4 = 2.5 
+                                - std dev = sqrt(2.5) = 1.581 
+                                - or std dev = 2.5^0.5 = 1.581
+        - .var() 
+            - Variance is a measure that helps us understand how the numbers in a group differ from their average
+            - sense of how scattered or clustered the data is
+            - square the std dev 
+
+    - Plotting with pandas 
+        - pandas good for quick vis, matplot for in depth 
+        - .hist()
+            - quick histogram for df 
+                - figsize param for size of output image
+                    - 8 x 8 = 8 by 8 image size
+                - terminating semicolon to suppress unwatned output 
+            - can plot for a single series (col) too 
+                -df['col'].hist()
+        - .plot(kind='chart type')
+            - bar
+            - hist 
+            - pie 
+            - box
+            - df['col'].value_counts.plot(kind='bar')
+            - more parameters 
+                - figsize=(height, width)
+                - title= 'Title of plot'
+                - xlabel = ' X axis label' 
+                - ylabel = y axis label 
+                - color = color_name 
+                - legend = True 
+        - Scatter plots 
+            - df.plot(x=,y=)
+            - df_census.plot(x='capital-gain',y='hours-per-week',kind='scatter')
+        - pd.plotting.scatter_matrix()
+            - matrix of scatter plots and histograms
+    
+     - .nunique() 
+        - number of uniques 
+    - unique() 
+        - value output of uniques 
+    - pd.set_option("display.float_format","{:.2f}".format)
+        - Set float format instead of notation 
+    - .unstack()
+        - pivots one of your grouped index levels into columns.
+        - profit_over_time = df.groupby(["release_year", "genres"])["profit"].mean().unstack()
+    - .loc()
+        - Access a whole row 
+        - df.loc[[rowid]]
+        - returns whole row matching index id 
+    
+    CSV Files 
+
+    - pd.read_csv
+    - Parameters!
+        - filepath = file path of csv file 
+        - sep = separator (, for csv files)
+            - sep = : 
+        - header = header of csv 
+            - header = 2 uses row 2 as column headers 
+            - header = none does not use any headers
+
+        - index_col = which column is t he index, or create a new numeric one 
+            - df = pd.read_csv('student_scores.csv', index_col='Name')
+            - can be more than 1 
+
+        - names = custom labels for columns 
+            - labels = ['id', 'name', 'attendance', 'hw', 'test1', 'project1', 'test2', 'project2', 'final']
+            - df = pd.read_csv('student_scores.csv', names=labels)
+                - uses names as column headers 
+            - df_powerplant = pd.read_csv('powerplant_data.csv',header=0,names= ["temp", "exhaust", "pressure", "humidity", "energy"])
+                - header = 0 removes original col names, replaces with names 
+
+    - pd.to_csv
+    - Parameters 
+        - index = FALSE 
+            - to_csv() will store our index unless we tell it not to
+            - makes it not store the index in an unnamed column 
+    - np.mean()
+            - comptue mean, super fast 
+
+    - Unpivot / Melting 
+
+            - Turning column headers that are values into row/column values 
+            - i.e. - student test scores across the top as col headers, values are frequency/count 
+                - unpivot to a Test score column and count column 
+            - convert a wide dataset (with many columns) into a long format (with fewer columns and more rows)
+
+            - .melt() method 
+                - id_vars parameter = the column to use as the identifier row 
+                    - all columns other than this one are unpivoted 
+                - var_name parameter 
+                    - name of your new variable / col header 
+                - value_name parameter 
+                    - name of the value column(s)
+
+        - Pivoting 
+            - Pivot tables 
+            - Grouping / Aggregates
+            - convert a long dataset into a wide dataset and create useful groupings
+
+            - .pivot() method / parameters 
+                - index = values to create groupings for 
+                - columns = columns to create 
+                - values = column values to aggregate
+
+        - Transposing 
+
+            - Condensing a dataset 
+            - Table with values as the headers, 
+            - flip to a table 
+            - switch rows with columns and columns with rows
+
+            - .T method 
+                - df.T 
+                - .set_index('IndexValue').T
+
+        - Merging 
+            
+            - Combining tables on a matching value 
+            - Keys 
+
+            - pd.merge(table1, table2)
+            - by default is inner join 
+            - on parameter 
+                - specifies keys to join on 
+                - on=["col"]
+            - how parameter 
+                - join type 
+                - how = 'right'
+                    - default is inner 
+            - left_on / right_on 
+                - specifies which dataframe's index (left or right) to use as the join key
+        
+        - Appending / Concatenate 
+
+            - Adding data points from one table onto the bottom of another
+            - Good for datasets with same column values in two differnet tables
+            - Combines vertically where merging combines horizontally
+
+            - pd.concat([table1, table2], ignore_index=True)
+                - ignore_index=True to not use index on concat 
+
+        - Group By / Aggregate 
+
+            - Sums / Means / etc 
+            - .groupby('column', sort=False)["Col to sum/mean/agg"].agg(["aggtype1","aggtype2"])   (sum, mean, max, etc)
+
+        - Identifying outliers when a range is known:
+
+            - df.loc to access the rows by index outside range 
+            - df.loc[(df["age"] > 18)]
+            - df.loc[(df["age"] < 11)]
+
+        - When range isnt known: 
+
+            - df.describe().loc[['mean','std']]
+                - returns mean and stand dev for df 
+            - Calculate upper and lower bound for df 
+                - upper = df['age']['mean] + df[age][std]
+                - lower = df['age']['mean] - df[age][std]
+            - violating rows = df[(df[age] < lower) | df[age] > upper]
+            - outliers = violating rows.index
+               - get index of out of bounds values 
+            - df.drop(index=outliers, inplace=True)
+            - df.describe()
+
+
+        - Duplicates 
+
+        - .duplicated([col1, col2]) 
+            - get duplicated rows 
+            - returns t or f 
+        - df.loc[df.duplicated([col1,col2])]
+            - shows actual values of duplicates minus the first occurence
+        - Keep records of two thigns 
+            - number of rows with duplicates 
+                - df.duplicated().sum()
+            - trends in duplicates 
+                - which duplicate to delete?
+        - df.drop_duplicates(subset=[cols, cols])
+            - keep parameter 
+                - keep = 'last' drops all dups except the last 
+        - df.drop([index])
+            - to drop middle row duplicates 
+
+    - Missing Data 
+
+        - What if missing data / nulls are misrepresented with a - or # or else?
+            - df.loc[df['col'].isin(["-"])]
+                - returns index location of isin value 
+            - np.nan 
+                - value becomes NAN for identifying nulls values 
+            - df[col].replace({'value': np.nan})
+                - replace null identifier with nan 
+
+        - Handling the nan's / na's after replacing 
+
+            - df.isna().sum()
+                - sum of na's 
+            - df.dropna()
+                - drops na's 
+            - drop column when 90-95% are na's 
+            - df.drop(col, axis=1)
+            - impute values 
+                - df.fillna(df.mean())
+                    - fills in the nans with the mean 
+                - single column imputation 
+                    - df[col] = df[col].fillna(df[col].mean())
+            - describe() ignores nans 
+            - pd.cut()
+                - creates bins for data 
+                - categories
+                - df[col] = pd.cut(df[col],4) = groups of 4 
+                    - df.value_counts()
+
+
+    - Unzipping Files 
+        - zipfiles package 
+
+            - import zipfiles
+            - with zipfile.ZipFile("file.zip","r") as zip_ref:
+                zip_ref.extractall("targetdir")
+    - Flat Files 
+        - .txt, .csv, .tsv
+        - delimiters
+        - not all .txt files are flat files
+        
+    - Flat Files in Python 
+        - pd.read_csv
+            - can also read tsv's by passing sep parameter
+            - sep='\t'
+        - Zip files 
+            - import zipfile 
+            - with zipfile.ZipFile(filename,"r") as zip_ref:
+            - zip_ref.extractall("newfoldername/")
+                - extractall extracts all files to the folder 
+            - pd.read_csv
+            - wont read the values correctly
+
+            - Next Steps:
+                - Sep = ";"
+                - header = 0
+                    - defines header as first row of csv 
+                - dtype = {dictonary}
+                    - define datatypes of the column labels 
+                - index_col = 
+                    - define an index col label 
+                - na_values
+
+
+    Programatically Downloading Files
+
+        - requests library
+            - response = requests.get()
+            - response.raise_for_status()
+                - status code 
+            - file_path = os.path.join(folder_name, url.split('/)[-1])
+                - joins the folder name with the file name to put in folder 
+            - with open(file_path, mode='wb' (binary)) as file:
+                - file.write(response.content)
+        - os library 
+            - Create a directory to store the retrieved data 
+            - folder_name = reviews_2017
+            - if not os.path.exists(folder_name):
+                - os.makedirs(folder_name)
+            - urls = list of urls 
+            
+            
+    Text Files 
+
+        - Use a specific character set
+        - Contain no rules for structure and no formatting, like italics or bolding
+        - Have no media, like images or video
+        - Lines of text are separated by newline characters or backslash ends in Python
+        - can be viewed and edited in simple text editors
+        - Character Sets 
+            - 
+        - Encoding
+            - assigns a uniqe numeric identifier
+            - ASCII 
+                - A = 65
+                - 1 = 49
+            - Unicode 
+                - used by most sytems 
+                - UTF 8
+            - .encode function 
+                - .encode(ASCII)
+
+    Gather with API's
+
+    - get requests 
+    - json 
+    - import requests
+    - import json() 
+    - response = requests.get(url).json()
+    - with open('book.json','w') as f:
+        json.dump(json_dat,f)
+        - saves the data to a file 
+
+
+    Json in Python 
+
+        - .content displays all content 
+        - json.loads deserialzes output format to python object 
+        - .json() works the same way 
+
+Numpy 
+
+    - Random Seeding 
+                - np.random.seed
+                    - get the same results each time you run through a notebook
+                - he number you pass in is not important, what matters is that you use the same one each time
+            - Array 
+                - v = np.array([1,2,3])
+                - v.shape would return (3,)
+            - Summary stats 
+                - np.var() 
+                - np.std() 
+                - np.mean()
+                    - Works as a proportion when data is binary 
+            - np.random.choice(array, size="number of draws")
+                - simulate draws from the array
+                - pass in the array to be drawn from, then the number of times a choice should be made using the size parameter
+                - replace parameter 
+                    - replace = False, once a value is chosen, it cant be chosen again 
+
+            - np.sample() - takes a df and a sample size 
+                - replace = False, once a value is chosen, it cant be chosen again 
+                - True can be picked again 
+            - np.percentile(df, 2.5), np.percentile(df,97.5) ------ gives confidence interval of 5%, take 2.5 off bottom and top 
+
+    Law of Large Numbers 
+
+    - the larger our sample size, the closer our statistic gets to the parameter
+    - If estimating the mean:
+        - if sample size is 500 out of 5,000,000, going to be further away from actual mean 
+        - if sample is 500,000 out of 5million, will be closer to actual mean 
+    
+    Central Limit Theorum 
+
+        - with a large enough sample size the sampling distribution of the mean will be normally distributed
+        - Applies to: 
+            - Sample means 
+            - Sample proportions
+            - Difference in sample means (xbar1 - xbar2)
+            - Difference in sample proportions
+        - Pull samples and plot on histograms until it's bell shaped 
+        - No matter how skewed a population is, it can still be distributed evenly with proper sampling
+
+    Bootstrapping 
+
+    - Sampling with replacement 
+        - For every random draw, the same sample is put back into the population and could be drawn from again 
+        - .random.choice samples this way 
+        - np.random.choice
+    - Used in machine learning algorithms
+
+    Confidence Intervals
+
+        - use bootstrapping and sampling distributions to build confidence intervals for our parameters of interest
+        - np.sample() 
+        - np.percentile(df, 2.5), np.percentile(df,97.5) ------ gives confidence interval of 5%, take 2.5 off bottom and top 
+
+    - P Values 
+        - the probability of observing your statistic (or one more extreme in favor of the alternative) if the null hypothesis is true
+        - Calculating 
+
+            - Simulate the values of your statistic that are possible from the null
+            - Calculate the value of the statistic you actually obtained in your data
+            - Compare your statistic to the values from the null
+            - Calculate the proportion of null values that are considered extreme based on your alternative
+
+        - Closer to 1, accept null hypothesis 
+        - Closer to 0, reject null hypothesis
+
+
+Regression 
+
+    Linear Regression 
+
+    - Simple Linear Regression
+        - Two quantitative variables compared 
+            - Scatter plots work well 
+        - Response Variable 
+            - Variable interested in predicting 
+        - Explanatory Variable 
+            - variable used to predict the resposne 
+        
+        - Price vs sales where price is the explanatory - more control, sales = response 
+
+        - Correlation Coefficient 
+
+            - Tells us the strength and direction of a linear relationship
+            - denoted by lowercase r
+            - Between -1 and 1
+                - closer to 1 = stronger 
+                - positive = upward slope, Negatives = downward slope 
+                - -0.92 = strong negative 
+                - 0 makes a parabola / U Shape 
+
+            - Rules of Thumb 
+
+                - .7 <= |r| < 1 = strong 
+                - .3 <= |r| < .7 = moderate 
+                - 0 - 0.3 = weak 
+    
+    - Fit Line Definition 
+        - Consists of intercept and slope 
+        - y = b0 + b1x 
+        - Intercept 
+            -  the predicted value of the response when the x-variable is zero
+            - b0
+            - line on y axis when x = 0
+        - Slope 
+            - the predicted change in the response for every one unit increase in the x-variable
+            - b1
+        - y vs yhat 
+            - yhat = points on the line (x1, yhat1)
+                - Predicted value of the response from the line 
+            - y = actual data points (not on line) (x1,y1)
+        - x1 = explanatory variable
+
+    - Fitting a Line 
+
+        - Least Squares Algorithm 
+
+            - Minimize the sum of the squared vertical distances from the line to points 
+            - Σ(yi - Yhati)^2 
+            - Find the smallest possible value from the formula using StatsModels or scikit learn package 
+
+        - StatsModels 
+            - Statsmodels easily provides coefficients, p-values, and model summaries, similar to the libraries in R or SAS, we will be using it here.
+            - Scikit learn often preferred 
+
+            - OLS Method 
+                - Ordinary Least Squares 
+                - import StatsModels as sm 
+                - sm.OLS(yval, list of x values)
+                - results = lm.fit() 
+                    - fits the model 
+                - results.summary()
+                    - displays statistics
+
+
+    Multiple Linear Regression 
+
+        - Use quantitative and categorical variables 
+        - y^ = b0 + b1x1 +b2x2 + b3x3 etc 
+        - Create a matrix using X 
+
+        - Fitting 
+
+            - similar to OLS method, add y value (prediction), and list of quantitative x values to model 
+
+    Dummy Variables 
+
+        - Encoding categorical values as 1 or 0
+        - Create a new column for each unique categorical value 
+        - IF column contains A, B, C, D
+            - Create 4 cols 
+            - If that row contains an A for the A column, put a 1 there, else 0
+                - Repeate for all cols 
+            - End up dropping one of the cols because it can be inferred from results of the other columns
+                - called the baseline column 
+        - pandas method 
+            - pd.get_dummies(df['categorical column'])
+            - df[['A', 'B', 'C']] = pd.get_dummies(df['categorical col'])
+            - lm = sm.OLS(df['price'], df[['intercept','lodge','ranch']])
+                - didnt include victorian bc thats our drop / baseline 
+            - intercept = baseline 
+            - each other coefficent is a comparison to the baseline 
+
+    Logistic Regression 
+
+        - make a prediction about the relationship between categorical dependent variables and predictors
+        - predicts categorical responses when there are only two possible outcomes
+        - Predict fraud on a credit card, predict loan approvals 
+        - Bounds to a probability between 0 and 1 
+
+        - 1 and 0 outcome only 
+            - Fraud = 1, not = 0 
+        - Linear regression can take any value / is uncontrolled
+            - House could have a negative price 
+        
+        - Fitting a model 
+
+            - Change categorical to dummy variables 
+            - uses logit rather than OLS 
+                - model = sm.logit(df[fraud], df[intercept, duration])
+                - results = logit.model.fit()
+                - results.summary2()
+
+        - Interpreting Results 
+
+            - for every one unit increase in the explanatory variable x1,  we expect a multiplicative change in the odds
+
+        - Model Metrics
+            - Accuracy
+                - the most common measure to use is accuracy.
+                - number of correctly labeled rows divided by total number of rows in df 
+
+SciKit Learn 
+
+    - import sklearn 
+    - from sklearn.Preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
+    - from sklearn.impute import SimpleImputer
+    - from sklearn import set_config
+
+    - set_config(transform_output = "pandas")
+        - set pandas dataframe format 
+
+    - Scale data 
+        - for ML tasks 
+        - ensure data folllows a standard scaling format 
+        - In many real-world cases, the scale or range of units applying for one variable in our dataset doesn’t apply to others
+        - sklearn’s StandardScaler(), MinMaxScaler(), or RobustScaler() 
+
+        - scaler = StandardScaler().fit(dataset)
+            - fit the scaler to a dataframe with .fit 
+            - fitting computes mean and stdev to be used later 
+            - scaler.mean 
+            - scaler,scale_ = stdev 
+        - scaled = scaler.transform(df)
+    
+
+    Encoding Data 
+
+        - Like creating dummies for regression models 
+        - Ordinal Encoding 
+
+            - encodes categorical features as an integer array 
+            - from numpy import asarray 
+            - data = asarray([data],[wranling],[rocks])
+                - puts values to an array 
+            - encoder = OrdinalEncoder()
+            - encoder.fit_transform()
+                - fits and transforms in one function from sklearn 
+        
+        - One Hot Encoding 
+
+            - like pd.get_dummies, this creates columns for each value with a numeric assignment
+            -  encoder = OneHotEncoder(sparse_output=False)
+            - encoder.fit_transform(df)
+
+Web Scraping
+
+    - use requests.get(url)
+    - Save to an HTML file 
+        - with open(file.html, mode="wb) as file:
+            file.write(.content)
+    - When given a choice, pick APIs over scraping
+    - Scraping is brittle and breaks with web layout redesign because the underlying HTML has changed
+
+    BeautifulSoup
+
+        - HTML Parser 
+        - from bs4 import BeautifulSoup
+        - with open('file.html') as file:
+            variable = BeautifulSoup(file, 'html.parser')
+        - .prettify()
+            - pretty prints HTML output 
+        - variable.find("title")
+            - finds the tag with the title tag 
+            - prints the text in the title tag 
+            - variable.find("title).text.strip()
+                - only return text without tags
+            - find values within a tag by tag type or class 
+                - variable.find("a", class_="item to find")
+        - .findall()
+            - finds all the matches 
+            - items = soup.findall("a", class="something")
+                - for item in items:
+                    print(item.text.strip())
+
+RDB Wrangling 
+
+    - SQLAlchemy
+        - from SQLAlchemy improt create_engine, text 
+        - engine = create_engine('sqlite:///databasename.db')
+        - Store data 
+            - df.to_sql('table', engine, index=False, if_exists='repalce')
+                - table creates table name 
+        - Read Data 
+            - df_gather = pd.read_sql(sql=text('Select * From table), con=engine.connect())
+            - df_gather.head()
